@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { Bot, Plus, Search, MoreVertical, Zap, ExternalLink } from "lucide-react";
+import { Plus, Search, MoreVertical, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import DashboardLayout from "@/components/DashboardLayout";
-
-const mockBots = [
-  { id: 1, name: "ShopBot", token: "****:AAF...xyz", status: "active", commands: 12, users: 1432, webhook: true },
-  { id: 2, name: "SupportBot", token: "****:BBG...abc", status: "active", commands: 8, users: 856, webhook: true },
-  { id: 3, name: "NewsBot", token: "****:CCH...def", status: "inactive", commands: 5, users: 234, webhook: false },
-];
 
 export default function Bots() {
   const [search, setSearch] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
-
-  const filtered = mockBots.filter((b) => b.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <DashboardLayout>
@@ -44,48 +36,10 @@ export default function Bots() {
 
         {/* Bot grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((bot, i) => (
-            <motion.div
-              key={bot.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="glass-card p-5 hover:border-primary/30 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Zap className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground">{bot.name}</h3>
-                    <p className="text-xs text-muted-foreground font-mono">{bot.token}</p>
-                  </div>
-                </div>
-                <button className="text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                  <MoreVertical className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{bot.commands} commands</span>
-                <span>{bot.users.toLocaleString()} users</span>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <span className={`text-xs px-2 py-0.5 rounded-full ${bot.status === "active" ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}`}>
-                  {bot.status}
-                </span>
-                <span className={`text-xs ${bot.webhook ? "text-success" : "text-destructive"}`}>
-                  {bot.webhook ? "Webhook ✓" : "No webhook"}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-
           {/* Add bot card */}
           <motion.button
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: filtered.length * 0.05 }}
             onClick={() => setShowAddModal(true)}
             className="glass-card p-5 flex flex-col items-center justify-center gap-2 border-dashed hover:border-primary/40 transition-colors min-h-[160px]"
           >

@@ -1,37 +1,16 @@
 import { useState } from "react";
-import { Code2, Plus, Play, Save, Trash2 } from "lucide-react";
+import { Code2, Plus, Play, Save } from "lucide-react";
 import { motion } from "framer-motion";
 import Editor from "@monaco-editor/react";
 import DashboardLayout from "@/components/DashboardLayout";
 
-const sampleTPY = `// TPY - Telegram Bot Scripting Language
-// Handler for /start command
-
-bot.sendMessage({
-  chat_id: update.message.chat.id,
-  text: "👋 Welcome to the bot!\\nUse /help to see available commands.",
-  parse_mode: "Markdown"
-});
-
-// Save user data
-User.saveData("joined", libs.Time.now());
-User.saveData("name", update.message.from.first_name);
-
-// Log the event
-bot.log("New user: " + update.message.from.first_name);
+const defaultTPY = `// TPY - Telegram Bot Scripting Language
+// Select or create a command to start editing
 `;
 
-const commands = [
-  { name: "/start", description: "Welcome message", active: true },
-  { name: "/help", description: "Show help menu", active: true },
-  { name: "/settings", description: "User settings", active: true },
-  { name: "/broadcast", description: "Admin broadcast", active: false },
-  { name: "*", description: "Wildcard handler", active: true },
-];
-
 export default function Commands() {
-  const [selected, setSelected] = useState("/start");
-  const [code, setCode] = useState(sampleTPY);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [code, setCode] = useState(defaultTPY);
 
   return (
     <DashboardLayout>
@@ -64,21 +43,8 @@ export default function Commands() {
                 <Plus className="h-4 w-4" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto p-1">
-              {commands.map((cmd) => (
-                <button
-                  key={cmd.name}
-                  onClick={() => setSelected(cmd.name)}
-                  className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                    selected === cmd.name
-                      ? "bg-accent text-accent-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent"
-                  }`}
-                >
-                  <span className="font-mono font-medium">{cmd.name}</span>
-                  <p className="text-xs text-muted-foreground mt-0.5">{cmd.description}</p>
-                </button>
-              ))}
+            <div className="flex-1 overflow-y-auto p-4 flex items-center justify-center">
+              <p className="text-xs text-muted-foreground text-center">No commands yet. Add a bot first, then create commands.</p>
             </div>
           </motion.div>
 
@@ -91,7 +57,7 @@ export default function Commands() {
           >
             <div className="flex items-center gap-2 p-3 border-b border-border">
               <Code2 className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground font-mono">{selected}</span>
+              <span className="text-sm font-medium text-foreground font-mono">{selected || "No command selected"}</span>
               <span className="text-xs text-muted-foreground">— TPY Script</span>
             </div>
             <div className="flex-1 min-h-0">
