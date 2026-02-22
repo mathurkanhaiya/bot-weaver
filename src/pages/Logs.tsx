@@ -1,44 +1,11 @@
 import { useState } from "react";
-import { ScrollText, Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 import DashboardLayout from "@/components/DashboardLayout";
-
-const mockLogs = [
-  { id: 1, time: "14:32:05", bot: "ShopBot", level: "info", message: "Incoming update from user 12345" },
-  { id: 2, time: "14:32:05", bot: "ShopBot", level: "info", message: "Executing /start command handler" },
-  { id: 3, time: "14:32:06", bot: "ShopBot", level: "success", message: "Message sent successfully (chat_id: 12345)" },
-  { id: 4, time: "14:31:20", bot: "SupportBot", level: "info", message: "Broadcast job started: 856 recipients" },
-  { id: 5, time: "14:31:45", bot: "SupportBot", level: "success", message: "Broadcast completed: 856 sent, 0 failed" },
-  { id: 6, time: "14:30:00", bot: "NewsBot", level: "error", message: "Error in /fetch handler: Request timeout after 30s" },
-  { id: 7, time: "14:29:50", bot: "NewsBot", level: "warn", message: "Rate limit approaching: 28/30 requests per second" },
-  { id: 8, time: "14:28:10", bot: "ShopBot", level: "info", message: "Webhook verified successfully" },
-  { id: 9, time: "14:27:00", bot: "ShopBot", level: "info", message: "User data saved: user_12345.preferences" },
-  { id: 10, time: "14:25:30", bot: "SupportBot", level: "warn", message: "Slow response: 2.3s for /help command" },
-];
-
-const levelColors: Record<string, string> = {
-  info: "text-primary",
-  success: "text-success",
-  error: "text-destructive",
-  warn: "text-warning",
-};
-
-const levelBg: Record<string, string> = {
-  info: "bg-primary/10",
-  success: "bg-success/10",
-  error: "bg-destructive/10",
-  warn: "bg-warning/10",
-};
 
 export default function Logs() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-
-  const filtered = mockLogs.filter((log) => {
-    if (filter !== "all" && log.level !== filter) return false;
-    if (search && !log.message.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
 
   return (
     <DashboardLayout>
@@ -74,17 +41,8 @@ export default function Logs() {
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card overflow-hidden">
-          <div className="font-mono text-sm divide-y divide-border">
-            {filtered.map((log) => (
-              <div key={log.id} className="flex items-start gap-3 px-4 py-2.5 hover:bg-muted/30 transition-colors">
-                <span className="text-muted-foreground shrink-0 text-xs pt-0.5">{log.time}</span>
-                <span className={`text-xs px-1.5 py-0.5 rounded shrink-0 ${levelBg[log.level]} ${levelColors[log.level]}`}>
-                  {log.level.toUpperCase().padEnd(7)}
-                </span>
-                <span className="text-xs text-muted-foreground shrink-0">[{log.bot}]</span>
-                <span className="text-foreground text-xs">{log.message}</span>
-              </div>
-            ))}
+          <div className="p-8 text-center text-muted-foreground text-sm">
+            No logs yet. Logs will appear in real-time once your bots are active.
           </div>
         </motion.div>
       </div>
